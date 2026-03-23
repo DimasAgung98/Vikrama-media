@@ -8,8 +8,11 @@ import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
 import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc,
   doc, setDoc, getDoc, query, orderBy, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<<<<<<< HEAD
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+=======
+>>>>>>> 052823c (add new update)
 
 const firebaseConfig = {
 apiKey: "AIzaSyB9UJrsDK-Tk3w56v1KCA7a1yfe6HuN8Ig",
@@ -23,7 +26,10 @@ apiKey: "AIzaSyB9UJrsDK-Tk3w56v1KCA7a1yfe6HuN8Ig",
 const app     = initializeApp(firebaseConfig);
 const auth    = getAuth(app);
 const db      = getFirestore(app);
+<<<<<<< HEAD
 const storage = getStorage(app);
+=======
+>>>>>>> 052823c (add new update)
 const DEMO    = firebaseConfig.apiKey === "YOUR_API_KEY";
 
 /* ── In-memory demo store ── */
@@ -52,6 +58,7 @@ const DS = {
 /* ── Helpers ── */
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function setBL(btn,on){btn.disabled=on;btn.querySelector(".bt").style.display=on?"none":"inline";btn.querySelector(".bl").style.display=on?"inline":"none"}
+<<<<<<< HEAD
 function showProg(wid,fid,pid,pct){const w=document.getElementById(wid);w.classList.remove("hidden");document.getElementById(fid).style.width=pct+"%";document.getElementById(pid).textContent=pct+"%";if(pct>=100)setTimeout(()=>w.classList.add("hidden"),1500)}
 function openM(id){document.getElementById(id).classList.remove("hidden");document.body.style.overflow="hidden"}
 function closeM(id){document.getElementById(id).classList.add("hidden");document.body.style.overflow=""}
@@ -81,6 +88,11 @@ function uploadFile(file,path,onProg){
   });
 }
 
+=======
+function openM(id){document.getElementById(id).classList.remove("hidden");document.body.style.overflow="hidden"}
+function closeM(id){document.getElementById(id).classList.add("hidden");document.body.style.overflow=""}
+function showMsg(id,text,ok){const el=document.getElementById(id);el.textContent=text;el.className="smsg "+(ok?"ok":"er");el.classList.remove("hidden");setTimeout(()=>el.classList.add("hidden"),4000)}
+>>>>>>> 052823c (add new update)
 /* Close modals via data-m attribute */
 document.querySelectorAll(".mcls, .btn-cancel").forEach(btn=>{
   const target=btn.dataset.m||btn.closest(".moverlay")?.id;
@@ -170,7 +182,11 @@ function renderGT(){
     <td>${it.order??""}</td>
     <td><div class="abts">
       <button class="bsm bedit" onclick="editG('${it.id}')">Edit</button>
+<<<<<<< HEAD
       <button class="bsm bdel"  onclick="askDel('gallery','${it.id}','${esc(it.storagePath||"")}')">Delete</button>
+=======
+      <button class="bsm bdel"  onclick="askDel('gallery','${it.id}')">Delete</button>
+>>>>>>> 052823c (add new update)
     </div></td>
   </tr>`).join("");
 }
@@ -182,10 +198,26 @@ document.getElementById("openGM").addEventListener("click",()=>{
   document.getElementById("gCat").value="photo";
   document.getElementById("gOrd").value=gData.length+1;
   document.getElementById("gPrev").classList.add("hidden");
+<<<<<<< HEAD
   document.getElementById("gFile").value="";
   openM("galleryModal");
 });
 
+=======
+  openM("galleryModal");
+});
+
+/* Preview foto saat URL diisi */
+document.getElementById("gUrl").addEventListener("blur", e => {
+  const url = e.target.value.trim();
+  if (!url) { document.getElementById("gPrev").classList.add("hidden"); return; }
+  const img = document.getElementById("gPI");
+  img.src = url;
+  img.onload  = () => document.getElementById("gPrev").classList.remove("hidden");
+  img.onerror = () => document.getElementById("gPrev").classList.add("hidden");
+});
+
+>>>>>>> 052823c (add new update)
 window.editG=id=>{
   const it=gData.find(g=>g.id===id);if(!it)return;
   document.getElementById("gMT").textContent="Edit Photo";
@@ -197,6 +229,7 @@ window.editG=id=>{
   document.getElementById("gYear").value=it.year||"";
   document.getElementById("gClient").value=it.client||"";
   document.getElementById("gOrd").value=it.order??1;
+<<<<<<< HEAD
   if(it.url){document.getElementById("gPI").src=it.url;document.getElementById("gPrev").classList.remove("hidden");}
   openM("galleryModal");
 };
@@ -224,6 +257,31 @@ document.getElementById("saveGallery").addEventListener("click",async()=>{
     }
     if(!imgUrl){alert("Please upload a photo or enter a URL.");return;}
     data.url=imgUrl; if(spath)data.storagePath=spath;
+=======
+  if(it.url){
+    document.getElementById("gPI").src=it.url;
+    document.getElementById("gPrev").classList.remove("hidden");
+  }
+  openM("galleryModal");
+};
+
+document.getElementById("saveGallery").addEventListener("click",async()=>{
+  const btn=document.getElementById("saveGallery");
+  const eid=document.getElementById("gEditId").value;
+  const urlV=document.getElementById("gUrl").value.trim();
+  if(!urlV){alert("Masukkan URL foto terlebih dahulu.");return;}
+  const data={
+    url: urlV,
+    caption:document.getElementById("gCap").value.trim(),
+    category:document.getElementById("gCat").value,
+    description:document.getElementById("gDesc").value.trim(),
+    year:document.getElementById("gYear").value.trim(),
+    client:document.getElementById("gClient").value.trim(),
+    order:parseInt(document.getElementById("gOrd").value)||1
+  };
+  setBL(btn,true);
+  try{
+>>>>>>> 052823c (add new update)
     if(DEMO){
       if(eid){const i=DS.gallery.findIndex(g=>g.id===eid);if(i!==-1)DS.gallery[i]={...DS.gallery[i],...data};}
       else DS.gallery.push({id:"g"+Date.now(),...data});
@@ -232,6 +290,7 @@ document.getElementById("saveGallery").addEventListener("click",async()=>{
       else await addDoc(collection(db,"gallery"),{...data,createdAt:serverTimestamp()});
     }
     closeM("galleryModal"); await loadGallery();
+<<<<<<< HEAD
   } catch(e){
     console.error(e);
     // Show error inside modal instead of alert
@@ -246,6 +305,9 @@ document.getElementById("saveGallery").addEventListener("click",async()=>{
     mft.parentNode.insertBefore(errEl, mft);
     setTimeout(()=>errEl.remove(), 8000);
   }
+=======
+  } catch(e){console.error(e);alert("Error: "+e.message);}
+>>>>>>> 052823c (add new update)
   finally{setBL(btn,false);}
 });
 
@@ -277,16 +339,26 @@ function renderVT(){
     <td>${it.order??""}</td>
     <td><div class="abts">
       <button class="bsm bedit" onclick="editV('${it.id}')">Edit</button>
+<<<<<<< HEAD
       <button class="bsm bdel"  onclick="askDel('videos','${it.id}','${esc(it.storagePath||"")}')">Delete</button>
+=======
+      <button class="bsm bdel"  onclick="askDel('videos','${it.id}')">Delete</button>
+>>>>>>> 052823c (add new update)
     </div></td>
   </tr>`).join("");
 }
 
 function switchVType(t){
+<<<<<<< HEAD
   document.getElementById("fYT").classList.toggle("hidden",t!=="youtube");
   document.getElementById("fTK").classList.toggle("hidden",t!=="tiktok");
   document.getElementById("fST").classList.toggle("hidden",t!=="storage");
   document.getElementById("fEM").classList.toggle("hidden",t!=="embed");
+=======
+  document.getElementById("fDR").classList.toggle("hidden", t!=="direct");
+  document.getElementById("fYT").classList.toggle("hidden", t!=="youtube");
+  document.getElementById("fEM").classList.toggle("hidden", t!=="embed");
+>>>>>>> 052823c (add new update)
 }
 
 document.getElementById("vType").addEventListener("change",e=>switchVType(e.target.value));
@@ -296,12 +368,22 @@ document.getElementById("openVM").addEventListener("click",()=>{
   document.getElementById("vEditId").value="";
   document.getElementById("vTitle").value="";
   document.getElementById("vDesc").value="";
+<<<<<<< HEAD
   document.getElementById("vType").value="youtube";
   document.getElementById("vYTId").value="";
   document.getElementById("vTKUrl").value="";
   document.getElementById("vEmbedUrl").value="";
   document.getElementById("vOrd").value=vData.length+1;
   switchVType("youtube");
+=======
+  document.getElementById("vType").value="direct";
+  document.getElementById("vDirectUrl").value="";
+  document.getElementById("vYTId").value="";
+  document.getElementById("vEmbedUrl").value="";
+  document.getElementById("vThumb").value="";
+  document.getElementById("vOrd").value=vData.length+1;
+  switchVType("direct");
+>>>>>>> 052823c (add new update)
   openM("videoModal");
 });
 
@@ -311,6 +393,7 @@ window.editV=id=>{
   document.getElementById("vEditId").value=id;
   document.getElementById("vTitle").value=it.title||"";
   document.getElementById("vDesc").value=it.description||"";
+<<<<<<< HEAD
   document.getElementById("vType").value=it.type||"youtube";
   document.getElementById("vYTId").value=it.embedId||"";
   document.getElementById("vTKUrl").value=it.tiktokUrl||"";
@@ -318,6 +401,15 @@ window.editV=id=>{
   document.getElementById("vThumb").value=it.thumbnail||"";
   document.getElementById("vOrd").value=it.order??1;
   switchVType(it.type||"youtube");
+=======
+  document.getElementById("vType").value=it.type||"direct";
+  document.getElementById("vDirectUrl").value=it.url||"";
+  document.getElementById("vYTId").value=it.embedId||"";
+  document.getElementById("vEmbedUrl").value=it.embedUrl||"";
+  document.getElementById("vThumb").value=it.thumbnail||"";
+  document.getElementById("vOrd").value=it.order??1;
+  switchVType(it.type||"direct");
+>>>>>>> 052823c (add new update)
   openM("videoModal");
 };
 
@@ -326,6 +418,7 @@ document.getElementById("saveVideo").addEventListener("click",async()=>{
   const eid=document.getElementById("vEditId").value;
   const type=document.getElementById("vType").value;
   const title=document.getElementById("vTitle").value.trim();
+<<<<<<< HEAD
   if(!title){alert("Please enter a title.");return;}
   const data={title,type,description:document.getElementById("vDesc").value.trim(),order:parseInt(document.getElementById("vOrd").value)||1};
   setBL(btn,true);
@@ -338,6 +431,33 @@ document.getElementById("saveVideo").addEventListener("click",async()=>{
       else if(f&&DEMO) data.url=URL.createObjectURL(f);
       data.thumbnail=document.getElementById("vThumb").value.trim();
     } else if(type==="embed") data.url=document.getElementById("vEmbedUrl").value.trim();
+=======
+  if(!title){alert("Masukkan judul video.");return;}
+
+  const data={
+    title, type,
+    description: document.getElementById("vDesc").value.trim(),
+    order: parseInt(document.getElementById("vOrd").value)||1
+  };
+
+  if(type==="direct"){
+    const url=document.getElementById("vDirectUrl").value.trim();
+    if(!url){alert("Masukkan URL video.");return;}
+    data.url=url;
+    data.thumbnail=document.getElementById("vThumb").value.trim();
+  } else if(type==="youtube"){
+    const id=document.getElementById("vYTId").value.trim();
+    if(!id){alert("Masukkan YouTube Video ID.");return;}
+    data.embedId=id;
+  } else if(type==="embed"){
+    const url=document.getElementById("vEmbedUrl").value.trim();
+    if(!url){alert("Masukkan embed URL.");return;}
+    data.embedUrl=url;
+  }
+
+  setBL(btn,true);
+  try{
+>>>>>>> 052823c (add new update)
     if(DEMO){
       if(eid){const i=DS.videos.findIndex(v=>v.id===eid);if(i!==-1)DS.videos[i]={...DS.videos[i],...data};}
       else DS.videos.push({id:"v"+Date.now(),...data});
@@ -354,17 +474,27 @@ document.getElementById("saveVideo").addEventListener("click",async()=>{
    DELETE
 ══════════════════════════════════ */
 let pendDel=null;
+<<<<<<< HEAD
 window.askDel=(col,id,sp)=>{pendDel={col,id,sp};openM("delModal");};
 document.getElementById("confirmDel").addEventListener("click",async()=>{
   if(!pendDel)return;
   const{col,id,sp}=pendDel; pendDel=null; closeM("delModal");
+=======
+window.askDel=(col,id)=>{pendDel={col,id};openM("delModal");};
+document.getElementById("confirmDel").addEventListener("click",async()=>{
+  if(!pendDel)return;
+  const{col,id}=pendDel; pendDel=null; closeM("delModal");
+>>>>>>> 052823c (add new update)
   try{
     if(DEMO){
       if(col==="gallery")DS.gallery=DS.gallery.filter(g=>g.id!==id);
       if(col==="videos") DS.videos =DS.videos.filter(v=>v.id!==id);
     } else {
       await deleteDoc(doc(db,col,id));
+<<<<<<< HEAD
       if(sp){try{await deleteObject(ref(storage,sp));}catch{}}
+=======
+>>>>>>> 052823c (add new update)
     }
     if(col==="gallery")await loadGallery();
     if(col==="videos") await loadVideos();
@@ -384,11 +514,14 @@ async function loadAbout(){
     document.getElementById("abImage").value=d.image||"";
   }catch{}
 }
+<<<<<<< HEAD
 document.getElementById("abFile").addEventListener("change",async e=>{
   const f=e.target.files[0];if(!f||DEMO)return;
   try{const p=`about/profile_${Date.now()}_${f.name}`;const u=await uploadFile(f,p,pct=>showProg("abProg","abFill","abPct",pct));document.getElementById("abImage").value=u;}
   catch(e){alert("Upload failed: "+e.message);}
 });
+=======
+>>>>>>> 052823c (add new update)
 document.getElementById("saveAbout").addEventListener("click",async()=>{
   const btn=document.getElementById("saveAbout");
   const data={title:document.getElementById("abTitle").value.trim(),content:document.getElementById("abContent").value.trim(),image:document.getElementById("abImage").value.trim()};

@@ -2,6 +2,100 @@
  * VIKRAMA MEDIA — script.js v4.0
  * No form, social from Firestore, TikTok video support
  */
+<<<<<<< HEAD
+=======
+
+/* ── Cinematic Loader ── */
+(function() {
+  document.body.classList.add('cl-loading');
+
+  const loader    = document.getElementById('cinematicLoader');
+  const progress  = document.getElementById('clProgress');
+  const statusEl  = document.getElementById('clStatus');
+  const pctEl     = document.getElementById('clPct');
+  const tsEl      = document.getElementById('clTimestamp');
+
+  const stages = [
+    { pct: 15, label: 'LOADING ASSETS' },
+    { pct: 35, label: 'BUILDING SCENE' },
+    { pct: 60, label: 'RENDERING FRAMES' },
+    { pct: 82, label: 'SYNCING DATA' },
+    { pct: 95, label: 'FINALIZING' },
+    { pct: 100, label: 'READY' },
+  ];
+
+  let current = 0;
+  let stageIdx = 0;
+
+  // Timestamp ticker
+  function pad(n) { return String(n).padStart(2,'0'); }
+  function updateTs() {
+    const now = new Date();
+    tsEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}:${pad(Math.floor(now.getMilliseconds()/10))}`;
+  }
+  const tsTick = setInterval(updateTs, 50);
+
+  // Progress animation
+  function animateTo(target, label, duration, done) {
+    statusEl.textContent = label;
+    const start = current;
+    const startTime = performance.now();
+    function step(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      // Ease out expo
+      const ease = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      current = start + (target - start) * ease;
+      progress.style.width = current.toFixed(2) + '%';
+      pctEl.textContent = Math.floor(current) + '%';
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        current = target;
+        progress.style.width = target + '%';
+        pctEl.textContent = target + '%';
+        if (done) done();
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function runStage() {
+    if (stageIdx >= stages.length) return;
+    const s = stages[stageIdx];
+    const dur = stageIdx === stages.length - 1 ? 400 : 350 + Math.random() * 250;
+    const delay = stageIdx === 0 ? 1300 : 120 + Math.random() * 180;
+    setTimeout(() => {
+      animateTo(s.pct, s.label, dur, () => {
+        stageIdx++;
+        if (stageIdx < stages.length) {
+          runStage();
+        } else {
+          // All done — exit
+          setTimeout(exitLoader, 320);
+        }
+      });
+    }, delay);
+  }
+
+  function exitLoader() {
+    clearInterval(tsTick);
+    loader.classList.add('cl-exit');
+    document.body.classList.remove('cl-loading');
+    setTimeout(() => {
+      loader.classList.add('cl-done');
+    }, 850);
+  }
+
+  // Start after fonts/DOM settle
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runStage);
+  } else {
+    runStage();
+  }
+})();
+
+>>>>>>> 052823c (add new update)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, collection, getDocs, addDoc,
@@ -35,7 +129,10 @@ const DG = [
 const DV = [
   {id:"v1",title:"Brand Story — 2024 Reel",description:"Vikrama Media's latest cinematic showreel",type:"youtube",embedId:"LXb3EKWsInQ",order:1},
   {id:"v2",title:"Product Launch Film",description:"Commercial production highlight",type:"youtube",embedId:"aqz-KE-bpKQ",order:2},
+<<<<<<< HEAD
   {id:"v3",title:"TikTok Highlight Reel",description:"Best moments from TikTok",type:"tiktok",tiktokUrl:"https://www.tiktok.com/@khaby.lame/video/7051344801968219397",order:3},
+=======
+>>>>>>> 052823c (add new update)
 ];
 const DS = {
   whatsapp: {handle:"+62 812 3456 7890",url:"https://wa.me/6281234567890"},
@@ -162,6 +259,7 @@ document.getElementById("lightbox").addEventListener("touchend", e => {
 /* ── Videos ── */
 /* Returns {html, isTikTok} */
 function buildVideoCard(v) {
+<<<<<<< HEAD
   const isTikTok = v.type === "tiktok";
 
   if (isTikTok && v.tiktokUrl) {
@@ -192,13 +290,38 @@ function buildVideoCard(v) {
   let media = "";
   if (v.type === "youtube" && v.embedId) {
     // Use youtube-nocookie for fewer errors, add origin param
+=======
+  let media = "";
+
+  if ((v.type === "direct" || v.type === "storage") && v.url) {
+    // Direct MP4 URL (Dropbox, Google Drive, dll) — autoplay, muted, loop
+    media = `<video
+      autoplay muted loop playsinline
+      poster="${v.thumbnail||""}"
+      style="width:100%;height:100%;object-fit:cover;display:block;">
+      <source src="${v.url}" type="video/mp4"/>
+    </video>`;
+  } else if (v.type === "youtube" && v.embedId) {
+>>>>>>> 052823c (add new update)
     media = `<iframe
       src="https://www.youtube-nocookie.com/embed/${v.embedId}?rel=0&modestbranding=1&playsinline=1"
       title="${v.title||""}"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerpolicy="strict-origin-when-cross-origin"
       allowfullscreen loading="lazy"></iframe>`;
+<<<<<<< HEAD
   } else if (v.url) {
+=======
+  } else if (v.type === "embed" && v.embedUrl) {
+    media = `<iframe
+      src="${v.embedUrl}"
+      title="${v.title||""}"
+      allow="autoplay; fullscreen"
+      allowfullscreen loading="lazy"
+      style="border:none;"></iframe>`;
+  } else if (v.url) {
+    // fallback — generic video tag
+>>>>>>> 052823c (add new update)
     media = `<video controls preload="metadata" poster="${v.thumbnail||""}">
       <source src="${v.url}" type="video/mp4"/></video>`;
   }
@@ -215,6 +338,7 @@ function buildVideoCard(v) {
   };
 }
 
+<<<<<<< HEAD
 function initTikTokLoop() {
   window.addEventListener('message', function(e) {
     try {
@@ -237,6 +361,8 @@ function initTikTokLoop() {
     } catch (_) {}
   });
 }
+=======
+>>>>>>> 052823c (add new update)
 
 async function renderVideos() {
   const load = document.getElementById("videoLoading");
@@ -256,8 +382,11 @@ async function renderVideos() {
   if (!items.length) { empty.classList.remove("hidden"); return; }
   const cards = items.map(v => buildVideoCard(v));
   grid.innerHTML = cards.map(c => c.html).join("");
+<<<<<<< HEAD
   // Loop TikTok iframes when video ends
   initTikTokLoop();
+=======
+>>>>>>> 052823c (add new update)
   requestAnimationFrame(observeReveal);
 }
 
@@ -312,3 +441,136 @@ async function renderSocials() {
   await Promise.all([renderGallery(), renderVideos(), renderAbout(), renderSocials()]);
   observeReveal();
 })();
+<<<<<<< HEAD
+=======
+
+/* ── MUSIC BACKGROUND TOGGLE ── */
+(function initMusicToggle() {
+  const btn    = document.getElementById("musicToggle");
+  const audio  = document.getElementById("bgMusic");
+  const srcEl  = document.getElementById("bgMusicSrc");
+
+  if (!btn || !audio) return;
+
+  // ── Ganti URL ini dengan link musik kamu (Dropbox ?raw=1, dll) ──
+  const MUSIC_URL = "https://www.dropbox.com/scl/fi/85rwcc7v4dyy5j5x11wef/Skeler-N-i-g-h-t-D-r-i-v-e-PART-IV-Phonk-Wave.mp3?rlkey=zek3xo9t4h6fcia6eu15ttt2q&st=l1aoshr8&dl=0&raw=1";
+  // Contoh Dropbox:
+  // const MUSIC_URL = "https://www.dropbox.com/scl/fi/xxxx/music.mp3?raw=1";
+
+  // Jika tidak ada URL, sembunyikan tombol
+  if (!MUSIC_URL) {
+    btn.classList.add("no-src");
+    btn.setAttribute("data-label", "Tidak ada musik");
+    btn.setAttribute("title", "URL musik belum dikonfigurasi");
+    return;
+  }
+
+  srcEl.src = MUSIC_URL;
+  audio.load();
+  audio.volume = 0.35;
+
+  let isPlaying  = false;
+  let userPaused = false; // user sengaja matikan
+
+  // Simpan preferensi di sessionStorage
+  const savedState = sessionStorage.getItem("vm_music");
+  if (savedState === "off") userPaused = true;
+
+  function setLabel(playing) {
+    btn.setAttribute("data-label", playing ? "MUSIK ON" : "MUSIK OFF");
+  }
+
+  function setPlaying(play) {
+    isPlaying = play;
+    if (play) {
+      btn.classList.add("playing");
+      btn.classList.remove("muted");
+      btn.querySelector(".music-icon-off").style.display = "none";
+      btn.querySelector(".music-icon-on").style.display  = "none";
+    } else {
+      btn.classList.remove("playing");
+      btn.classList.add("muted");
+    }
+    setLabel(play);
+  }
+
+  // Fade in audio
+  function fadeIn(duration = 1800) {
+    audio.volume = 0;
+    audio.play().catch(() => {});
+    const step = 0.35 / (duration / 50);
+    const interval = setInterval(() => {
+      if (audio.volume + step >= 0.35) {
+        audio.volume = 0.35;
+        clearInterval(interval);
+      } else {
+        audio.volume += step;
+      }
+    }, 50);
+  }
+
+  // Fade out audio
+  function fadeOut(duration = 800, cb) {
+    const startVol = audio.volume;
+    const step = startVol / (duration / 50);
+    const interval = setInterval(() => {
+      if (audio.volume - step <= 0) {
+        audio.volume = 0;
+        audio.pause();
+        clearInterval(interval);
+        if (cb) cb();
+      } else {
+        audio.volume -= step;
+      }
+    }, 50);
+  }
+
+  // Autoplay setelah loader selesai (jika user belum matikan)
+  function tryAutoplay() {
+    if (userPaused) { setPlaying(false); return; }
+    fadeIn(2200);
+    setPlaying(true);
+  }
+
+  // Tunggu loader selesai sebelum autoplay
+  const loader = document.getElementById("cinematicLoader");
+  if (loader) {
+    const observer = new MutationObserver(() => {
+      if (loader.classList.contains("cl-done")) {
+        observer.disconnect();
+        setTimeout(tryAutoplay, 600);
+      }
+    });
+    observer.observe(loader, { attributes: true, attributeFilter: ["class"] });
+  } else {
+    setTimeout(tryAutoplay, 800);
+  }
+
+  // Klik toggle
+  btn.addEventListener("click", () => {
+    if (btn.classList.contains("no-src")) return;
+    if (isPlaying) {
+      fadeOut(600);
+      setPlaying(false);
+      userPaused = true;
+      sessionStorage.setItem("vm_music", "off");
+    } else {
+      fadeIn(1000);
+      setPlaying(true);
+      userPaused = false;
+      sessionStorage.setItem("vm_music", "on");
+    }
+  });
+
+  // Pause saat tab hidden, resume saat kembali (kecuali user mute)
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (isPlaying) audio.pause();
+    } else {
+      if (isPlaying && !userPaused) audio.play().catch(() => {});
+    }
+  });
+
+  setLabel(false);
+})();
+>>>>>>> 052823c (add new update)

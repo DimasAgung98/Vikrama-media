@@ -13,6 +13,72 @@
 </head>
 <body>
 
+<!-- ===== CINEMATIC LOADER ===== -->
+<div id="cinematicLoader" class="cl-loader">
+  <div class="cl-noise"></div>
+
+  <!-- Scan lines overlay -->
+  <div class="cl-scanlines"></div>
+
+  <!-- Top bar -->
+  <div class="cl-topbar">
+    <span class="cl-topbar-text">VIKRAMA MEDIA — SYSTEM INIT</span>
+    <span class="cl-topbar-right" id="clTimestamp">00:00:00:00</span>
+  </div>
+
+  <!-- Center content -->
+  <div class="cl-center">
+    <!-- Logo -->
+    <div class="cl-logo-wrap">
+      <img src="https://i.ibb.co.com/ccFLTcPD/Chat-GPT-Image-Mar-21-2026-01-43-14-PM-1.png" alt="Vikrama Media" class="cl-logo-img" id="clLogoImg"/>
+      <div class="cl-logo-ring"></div>
+    </div>
+
+    <!-- Brand name -->
+    <div class="cl-brand">
+      <span class="cl-brand-letter" style="--i:0">V</span>
+      <span class="cl-brand-letter" style="--i:1">I</span>
+      <span class="cl-brand-letter" style="--i:2">K</span>
+      <span class="cl-brand-letter" style="--i:3">R</span>
+      <span class="cl-brand-letter" style="--i:4">A</span>
+      <span class="cl-brand-letter" style="--i:5">M</span>
+      <span class="cl-brand-letter" style="--i:6">A</span>
+    </div>
+    <div class="cl-subtitle">CAPTURE GREATNESS</div>
+
+    <!-- Progress bar -->
+    <div class="cl-progress-wrap">
+      <div class="cl-progress-track">
+        <div class="cl-progress-fill" id="clProgress"></div>
+        <div class="cl-progress-glow"></div>
+      </div>
+      <div class="cl-progress-labels">
+        <span class="cl-status" id="clStatus">INITIALIZING</span>
+        <span class="cl-pct" id="clPct">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="cl-bottombar">
+    <span class="cl-bottombar-left">EST. 2026 — VIKRAMA</span>
+    <div class="cl-corner-marks">
+      <span></span><span></span>
+    </div>
+    <span class="cl-bottombar-right">MEDIA PRODUCTION</span>
+  </div>
+
+  <!-- Corner brackets -->
+  <div class="cl-corner cl-tl"></div>
+  <div class="cl-corner cl-tr"></div>
+  <div class="cl-corner cl-bl"></div>
+  <div class="cl-corner cl-br"></div>
+
+  <!-- Horizontal lines -->
+  <div class="cl-hline cl-hline-top"></div>
+  <div class="cl-hline cl-hline-bot"></div>
+</div>
+
 <!-- ===== NAVBAR ===== -->
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
@@ -49,7 +115,7 @@
     </div>
     <div class="hero-eyebrow">
       <span class="ey-line"></span>
-      <span>Est. 2024</span>
+      <span>Est. 2026</span>
       <span class="ey-line"></span>
     </div>
     <h1 class="hero-title">
@@ -261,12 +327,41 @@
 
     <!-- Bottom -->
     <div class="footer-bottom">
-      <span class="footer-copy">&copy; 2025 Vikrama Media. All rights reserved.</span>
+      <span class="footer-copy">&copy; 2026 Vikrama Media. All rights reserved.</span>
       <img src="https://i.ibb.co.com/ccFLTcPD/Chat-GPT-Image-Mar-21-2026-01-43-14-PM-1.png">
       <a href="admin.html" class="footer-admin">Admin Panel</a>
     </div>
   </div>
 </footer>
+
+<!-- ===== MUSIC BACKGROUND ===== -->
+<audio id="bgMusic" loop preload="none">
+  <!-- Ganti src dengan URL musik dari Dropbox/drive/dll -->
+  <source src="" type="audio/mpeg" id="bgMusicSrc"/>
+</audio>
+
+<!-- Music Toggle Button -->
+<button class="music-toggle" id="musicToggle" aria-label="Toggle background music" title="Background Music">
+  <span class="music-icon music-icon-on">
+    <!-- Speaker + waves -->
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15.54 8.46C16.48 9.4 17 10.67 17 12C17 13.33 16.48 14.6 15.54 15.54" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19.07 4.93C20.95 6.81 22 9.35 22 12C22 14.65 20.95 17.19 19.07 19.07" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+  <span class="music-icon music-icon-off" style="display:none;">
+    <!-- Speaker muted -->
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </span>
+  <span class="music-bars">
+    <span></span><span></span><span></span><span></span>
+  </span>
+</button>
 
 <script type="module" src="script.js"></script>
 </body>

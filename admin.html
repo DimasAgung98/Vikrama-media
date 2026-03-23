@@ -75,12 +75,11 @@
       <div class="tab-head"><h2>About</h2></div>
       <div class="ecard">
         <div class="fg"><label>Title</label><input type="text" id="abTitle" placeholder="Brand name / studio title"/></div>
-        <div class="fg"><label>Description <small>(separate paragraphs with blank line)</small></label><textarea id="abContent" rows="10" placeholder="Tell your story..."></textarea></div>
-        <div class="fg"><label>Profile Image URL</label><input type="url" id="abImage" placeholder="https://..."/></div>
+        <div class="fg"><label>Description <small>(pisahkan paragraf dengan baris kosong)</small></label><textarea id="abContent" rows="10" placeholder="Ceritakan tentang studio..."></textarea></div>
         <div class="fg">
-          <label>Upload Profile Image</label>
-          <div class="upzone"><input type="file" id="abFile" accept="image/*" class="finp"/><span>Click or drag image here</span><small>JPG, PNG, WEBP — max 5MB</small></div>
-          <div class="uprog hidden" id="abProg"><div class="pbar"><div class="pfill" id="abFill"></div></div><span id="abPct">0%</span></div>
+          <label>Profile Image URL</label>
+          <input type="url" id="abImage" placeholder="https://dl.dropboxusercontent.com/... atau link langsung"/>
+          <small class="hint">Dropbox: ubah ?dl=0 → ?raw=1 &nbsp;|&nbsp; Unsplash, ImgBB, dll juga bisa</small>
         </div>
         <button class="btn-save" id="saveAbout"><span class="bt">Save Changes</span><span class="bl hidden">Saving...</span></button>
         <p class="smsg hidden" id="abMsg"></p>
@@ -120,19 +119,18 @@
     <div class="mhd"><h3 id="gMT">Add Photo</h3><button class="mcls" data-m="galleryModal">&times;</button></div>
     <div class="mbd">
       <input type="hidden" id="gEditId"/>
-      <div class="fg"><label>Upload Photo</label>
-        <div class="upzone"><input type="file" id="gFile" accept="image/*" class="finp"/><span>Click or drag photo here</span><small>JPG, PNG, WEBP — max 10MB</small></div>
-        <div class="uprog hidden" id="gProg"><div class="pbar"><div class="pfill" id="gFill"></div></div><span id="gPct">0%</span></div>
-        <div class="iprev hidden" id="gPrev"><img id="gPI" src="" alt=""/></div>
-        <p class="upload-hint">&#9432; If upload is stuck at 0%, set Firebase Storage Rules: <code>allow read, write: if request.auth != null;</code></p>
+      <div class="fg">
+        <label>Photo URL</label>
+        <input type="url" id="gUrl" placeholder="https://dl.dropboxusercontent.com/... atau link langsung"/>
+        <small class="hint">Dropbox: ubah ?dl=0 menjadi ?raw=1 &nbsp;|&nbsp; Google Drive: gunakan link direct download</small>
       </div>
-      <div class="fg"><label>Or Photo URL</label><input type="url" id="gUrl" placeholder="https://..."/></div>
-      <div class="fg"><label>Caption</label><input type="text" id="gCap" placeholder="Short description"/></div>
+      <div class="iprev hidden" id="gPrev"><img id="gPI" src="" alt="" style="max-height:120px;border-radius:3px;border:1px solid rgba(255,255,255,.1);object-fit:contain;margin-top:.5rem;"/></div>
+      <div class="fg"><label>Caption</label><input type="text" id="gCap" placeholder="Judul singkat foto"/></div>
       <div class="fg"><label>Category</label><select id="gCat"><option value="photo">Photo</option><option value="product">Product</option><option value="event">Event</option></select></div>
-      <div class="fg"><label>Description</label><textarea id="gDesc" rows="3" placeholder="Detailed description..."></textarea></div>
+      <div class="fg"><label>Description</label><textarea id="gDesc" rows="3" placeholder="Deskripsi lengkap..."></textarea></div>
       <div class="frow2">
         <div class="fg"><label>Year</label><input type="text" id="gYear" placeholder="2024"/></div>
-        <div class="fg"><label>Client</label><input type="text" id="gClient" placeholder="Client name"/></div>
+        <div class="fg"><label>Client</label><input type="text" id="gClient" placeholder="Nama klien"/></div>
       </div>
       <div class="fg"><label>Display Order</label><input type="number" id="gOrd" min="1" value="1"/></div>
     </div>
@@ -146,23 +144,43 @@
     <div class="mhd"><h3 id="vMT">Add Video</h3><button class="mcls" data-m="videoModal">&times;</button></div>
     <div class="mbd">
       <input type="hidden" id="vEditId"/>
-      <div class="fg"><label>Title</label><input type="text" id="vTitle" placeholder="Video title"/></div>
-      <div class="fg"><label>Description</label><input type="text" id="vDesc" placeholder="Short description"/></div>
-      <div class="fg"><label>Type</label>
+      <div class="fg"><label>Title</label><input type="text" id="vTitle" placeholder="Judul video"/></div>
+      <div class="fg"><label>Description</label><input type="text" id="vDesc" placeholder="Deskripsi singkat"/></div>
+      <div class="fg"><label>Sumber Video</label>
         <select id="vType">
-          <option value="youtube">YouTube Embed</option>
-          <option value="tiktok">TikTok Video</option>
-          <option value="storage">Firebase Storage Upload</option>
-          <option value="embed">Other Embed URL</option>
+          <option value="direct">Direct Video URL (Dropbox, dll)</option>
+          <option value="youtube">YouTube</option>
+          <option value="embed">Embed URL lainnya</option>
         </select>
       </div>
-      <div id="fYT"><div class="fg"><label>YouTube Video ID</label><input type="text" id="vYTId" placeholder="e.g. dQw4w9WgXcQ"/><small class="hint">From: youtube.com/watch?v=<strong>THIS_PART</strong></small></div></div>
-      <div id="fTK" class="hidden"><div class="fg"><label>TikTok Video URL</label><input type="url" id="vTKUrl" placeholder="https://www.tiktok.com/@user/video/123..."/><small class="hint">Paste the full TikTok video URL</small></div></div>
-      <div id="fST" class="hidden">
-        <div class="fg"><label>Upload Video</label><div class="upzone"><input type="file" id="vFile" accept="video/*" class="finp"/><span>Click or drag video here</span><small>MP4, MOV — max 100MB</small></div><div class="uprog hidden" id="vProg"><div class="pbar"><div class="pfill" id="vFill"></div></div><span id="vPct">0%</span></div></div>
-        <div class="fg"><label>Thumbnail URL (optional)</label><input type="url" id="vThumb" placeholder="https://..."/></div>
+
+      <!-- Direct / Dropbox -->
+      <div id="fDR">
+        <div class="fg">
+          <label>URL Video (MP4)</label>
+          <input type="url" id="vDirectUrl" placeholder="https://dl.dropboxusercontent.com/..."/>
+          <small class="hint">
+            Dropbox: buka file → Share → Copy link, lalu ubah <code>?dl=0</code> → <code>?raw=1</code><br/>
+            Google Drive: File → Share → Anyone with link, lalu gunakan: <code>https://drive.google.com/uc?export=download&id=FILE_ID</code>
+          </small>
+        </div>
+        <div class="fg"><label>Thumbnail URL (opsional)</label><input type="url" id="vThumb" placeholder="https://..."/></div>
       </div>
-      <div id="fEM" class="hidden"><div class="fg"><label>Embed URL</label><input type="url" id="vEmbedUrl" placeholder="https://..."/></div></div>
+
+      <!-- YouTube -->
+      <div id="fYT" class="hidden">
+        <div class="fg">
+          <label>YouTube Video ID</label>
+          <input type="text" id="vYTId" placeholder="contoh: dQw4w9WgXcQ"/>
+          <small class="hint">Dari: youtube.com/watch?v=<strong>BAGIAN_INI</strong></small>
+        </div>
+      </div>
+
+      <!-- Embed -->
+      <div id="fEM" class="hidden">
+        <div class="fg"><label>Embed URL</label><input type="url" id="vEmbedUrl" placeholder="https://..."/></div>
+      </div>
+
       <div class="fg"><label>Display Order</label><input type="number" id="vOrd" min="1" value="1"/></div>
     </div>
     <div class="mft"><button class="btn-cancel" data-m="videoModal">Cancel</button><button class="btn-save" id="saveVideo"><span class="bt">Save</span><span class="bl hidden">Saving...</span></button></div>
