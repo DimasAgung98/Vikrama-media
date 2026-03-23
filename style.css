@@ -280,8 +280,6 @@ select{appearance:none;-webkit-appearance:none}
 .footer-script-logo{height:24px;width:auto;object-fit:contain;opacity:0.5;transition:opacity var(--t)}
 .footer-script-logo:hover{opacity:.8}
 
-<<<<<<< HEAD
-=======
 /* ── CINEMATIC LOADER ── */
 .cl-loader {
   position: fixed;
@@ -571,7 +569,6 @@ body.cl-loading {
   overflow: hidden;
 }
 
->>>>>>> 052823c (add new update)
 /* ── REVEAL ── */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s cubic-bezier(.4,0,.2,1),transform .8s cubic-bezier(.4,0,.2,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -627,8 +624,6 @@ body.cl-loading {
   .about-stats{flex-wrap:wrap;gap:1rem}
   .lb-info{max-height:50vh}
 }
-<<<<<<< HEAD
-=======
 
 /* ── MUSIC TOGGLE ── */
 .music-toggle {
@@ -739,4 +734,3 @@ body.cl-loading {
 @media(max-width:480px){
   .music-toggle { bottom: 1.25rem; right: 1.25rem; width: 46px; height: 46px; }
 }
->>>>>>> 052823c (add new update)

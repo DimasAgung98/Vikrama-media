@@ -2,8 +2,6 @@
  * VIKRAMA MEDIA — script.js v4.0
  * No form, social from Firestore, TikTok video support
  */
-<<<<<<< HEAD
-=======
 
 /* ── Cinematic Loader ── */
 (function() {
@@ -95,7 +93,6 @@
   }
 })();
 
->>>>>>> 052823c (add new update)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, collection, getDocs, addDoc,
@@ -129,10 +126,6 @@ const DG = [
 const DV = [
   {id:"v1",title:"Brand Story — 2024 Reel",description:"Vikrama Media's latest cinematic showreel",type:"youtube",embedId:"LXb3EKWsInQ",order:1},
   {id:"v2",title:"Product Launch Film",description:"Commercial production highlight",type:"youtube",embedId:"aqz-KE-bpKQ",order:2},
-<<<<<<< HEAD
-  {id:"v3",title:"TikTok Highlight Reel",description:"Best moments from TikTok",type:"tiktok",tiktokUrl:"https://www.tiktok.com/@khaby.lame/video/7051344801968219397",order:3},
-=======
->>>>>>> 052823c (add new update)
 ];
 const DS = {
   whatsapp: {handle:"+62 812 3456 7890",url:"https://wa.me/6281234567890"},
@@ -259,38 +252,6 @@ document.getElementById("lightbox").addEventListener("touchend", e => {
 /* ── Videos ── */
 /* Returns {html, isTikTok} */
 function buildVideoCard(v) {
-<<<<<<< HEAD
-  const isTikTok = v.type === "tiktok";
-
-  if (isTikTok && v.tiktokUrl) {
-    const match = v.tiktokUrl.match(/video\/(\d+)/);
-    const vid   = match ? match[1] : "";
-    // Use TikTok's official iframe embed — portrait 9:16
-    const iframeId = `tk-iframe-${vid}`;
-    const embedHtml = vid
-    ? `<iframe id="${iframeId}" data-vid="${vid}" src="https://www.tiktok.com/embed/v2/${vid}" allow="autoplay" allowfullscreen loading="lazy" scrolling="no" style="width:100%;height:100%;border:none;"></iframe>`
-      // ? `<iframe src="https://www.tiktok.com/embed/v2/${vid}" allow="autoplay" allowfullscreen loading="lazy" scrolling="no" style="width:100%;height:100%;border:none;"></iframe>`
-      : `<a href="${v.tiktokUrl}" target="_blank" class="tk-fallback">
-          <svg viewBox="0 0 24 24" fill="white" width="40" height="40"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.73a8.19 8.19 0 004.79 1.52V6.79a4.85 4.85 0 01-1.02-.1z"/></svg>
-          <span>Watch on TikTok ↗</span>
-        </a>`;
-
-    return {
-      isTikTok: true,
-      html: `<div class="vid-card vid-card-tiktok reveal">
-        <div class="vid-media-portrait">${embedHtml}</div>
-        <div class="vid-meta">
-          <h3 class="vid-title">${v.title||"Untitled"}</h3>
-          <p class="vid-desc">${v.description||""}</p>
-        </div>
-      </div>`
-    };
-  }
-
-  let media = "";
-  if (v.type === "youtube" && v.embedId) {
-    // Use youtube-nocookie for fewer errors, add origin param
-=======
   let media = "";
 
   if ((v.type === "direct" || v.type === "storage") && v.url) {
@@ -302,16 +263,12 @@ function buildVideoCard(v) {
       <source src="${v.url}" type="video/mp4"/>
     </video>`;
   } else if (v.type === "youtube" && v.embedId) {
->>>>>>> 052823c (add new update)
     media = `<iframe
       src="https://www.youtube-nocookie.com/embed/${v.embedId}?rel=0&modestbranding=1&playsinline=1"
       title="${v.title||""}"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerpolicy="strict-origin-when-cross-origin"
       allowfullscreen loading="lazy"></iframe>`;
-<<<<<<< HEAD
-  } else if (v.url) {
-=======
   } else if (v.type === "embed" && v.embedUrl) {
     media = `<iframe
       src="${v.embedUrl}"
@@ -321,7 +278,6 @@ function buildVideoCard(v) {
       style="border:none;"></iframe>`;
   } else if (v.url) {
     // fallback — generic video tag
->>>>>>> 052823c (add new update)
     media = `<video controls preload="metadata" poster="${v.thumbnail||""}">
       <source src="${v.url}" type="video/mp4"/></video>`;
   }
@@ -338,31 +294,6 @@ function buildVideoCard(v) {
   };
 }
 
-<<<<<<< HEAD
-function initTikTokLoop() {
-  window.addEventListener('message', function(e) {
-    try {
-      const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-
-      // Deteksi video selesai dari TikTok postMessage
-      const isEnded =
-        (data?.type === 'onStateChange' && data?.value === 'ended') ||
-        (data?.type === 'player:ended') ||
-        (data?.event === 'stateChange' && data?.info === 0);
-
-      if (isEnded) {
-        // Reload semua TikTok iframe agar loop dari awal
-        document.querySelectorAll('.vid-card-tiktok iframe').forEach(iframe => {
-          const src = iframe.src;
-          iframe.src = '';
-          setTimeout(() => { iframe.src = src; }, 300);
-        });
-      }
-    } catch (_) {}
-  });
-}
-=======
->>>>>>> 052823c (add new update)
 
 async function renderVideos() {
   const load = document.getElementById("videoLoading");
@@ -382,11 +313,6 @@ async function renderVideos() {
   if (!items.length) { empty.classList.remove("hidden"); return; }
   const cards = items.map(v => buildVideoCard(v));
   grid.innerHTML = cards.map(c => c.html).join("");
-<<<<<<< HEAD
-  // Loop TikTok iframes when video ends
-  initTikTokLoop();
-=======
->>>>>>> 052823c (add new update)
   requestAnimationFrame(observeReveal);
 }
 
@@ -441,8 +367,6 @@ async function renderSocials() {
   await Promise.all([renderGallery(), renderVideos(), renderAbout(), renderSocials()]);
   observeReveal();
 })();
-<<<<<<< HEAD
-=======
 
 /* ── MUSIC BACKGROUND TOGGLE ── */
 (function initMusicToggle() {
@@ -573,4 +497,3 @@ async function renderSocials() {
 
   setLabel(false);
 })();
->>>>>>> 052823c (add new update)
